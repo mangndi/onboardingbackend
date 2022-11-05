@@ -1,0 +1,43 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API System",
+    "description": "API Trading System",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api"
+    }
+  ],
+  "paths": {
+    "/initregistration" : {
+      "post": {
+        "tags": ["Registartion API"],
+        "description": "Registrasi Awal",
+        "requestBody": {
+          "description": "RegAPI",
+          "required": true,
+          "content": {
+            "application/json" : {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phonenum" : {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+
+          }
+        },
+        "responses": {
+          "200" : {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  }
+}
