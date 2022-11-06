@@ -11,8 +11,54 @@
     }
   ],
   "paths": {
+    "/generateotp" : {
+      "post": {
+        "security": [{
+            "ApiAuth" : []
+          }],
+        "tags": ["Generate OTP"],
+        "description": "Generate OTP",
+        "summary":  "Generate OTP",
+        "requestBody": {
+          "description": "Request OTP",
+          "required": true,
+          "content": {
+            "application/json" : {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phonenum" : {
+                    "type": "string"
+                  },
+                  "key" : {
+                    "type": "string"
+                  },
+                  "sendvia" : {
+                    "type": "integer"
+                  },
+                  "secretquestion" : {
+                    "type": "string"
+                  },
+                  "secretanswer" : {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200" : {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/initregistration" : {
       "post": {
+        "security": [{
+          "ApiAuth" : []
+        }],
         "tags": ["Registartion API"],
         "description": "Registrasi Awal",
         "requestBody": {
@@ -25,11 +71,13 @@
                 "properties": {
                   "phonenum" : {
                     "type": "string"
+                  },
+                  "otp" : {
+                    "type": "string"
                   }
                 }
               }
-            },
-
+            }
           }
         },
         "responses": {
@@ -37,6 +85,84 @@
             "description": "Success"
           }
         }
+      }
+    },
+    "/checkrelogin" : {
+      "get": {
+        "security": [{
+          "ApiAuth" : []
+        }],
+        "tags": ["check Relogin"],
+        "summary": "check on relogin",
+        "description": "check Relogin",
+        "parameters": [
+          {
+            "name": "phonenum",
+            "in": "query",
+            "description": "nomor Telp",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyid",
+            "in": "query",
+            "description": "secretid",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "secretanswer",
+            "in": "query",
+            "description": "secret answer",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200" : {
+            "description": "Success",
+            "content": {
+              "application/json" : {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "result" : {
+                      "type": "string",
+                      "description": "existing user or not result"
+                    },
+                    "page" : {
+                      "type": "integer",
+                      "description": "last page were accessed"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description": "not found",
+            "content": {
+              "text/plain" : {
+                "schema": {
+                  "title": "not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiAuth" : {
+        "type": "apiKey",
+        "in" : "header",
+        "name": "X-API-Key",
+        "description": "Auth for API"
       }
     }
   }
